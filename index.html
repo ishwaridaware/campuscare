@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Campus Care – A Digital Platform for Lost & Found Items</title>
+  <meta name="description" content="Campus Care is a modern digital platform helping students, faculty, and staff easily report, search, and recover lost and found items across the college campus.">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  
+  <!-- Main Stylesheet -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="top-announcement">
+    <div class="container announcement-inner">
+      <span><i class="fa-solid fa-graduation-cap"></i> Official College Lost & Found Digital Repository</span>
+      <div class="announcement-right">
+        <span id="campus-status-pill"><i class="fa-solid fa-circle-check text-success"></i> Campus Care Network Active</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navigation Bar -->
+  <header class="navbar-header" id="main-navbar">
+    <div class="container nav-container">
+      <a href="#home" class="brand-logo" id="brand-logo-link">
+        <div class="logo-icon-wrap">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+        <div class="logo-text-group">
+          <span class="logo-title">CAMPUS CARE</span>
+          <span class="logo-subtitle">Lost & Found Portal</span>
+        </div>
+      </a>
+
+      <!-- Desktop Navigation Links -->
+      <nav class="nav-menu" id="nav-menu">
+        <a href="#home" class="nav-link active" data-view="home"><i class="fa-solid fa-house"></i> Home</a>
+        <a href="#browse" class="nav-link" data-view="browse"><i class="fa-solid fa-compass"></i> Browse Items</a>
+        <a href="#report" class="nav-link" data-view="report"><i class="fa-solid fa-circle-plus"></i> Report Item</a>
+        <a href="#my-reports" class="nav-link" data-view="my-reports"><i class="fa-solid fa-clipboard-user"></i> My Reports</a>
+        <a href="#admin" class="nav-link admin-nav-link hidden" data-view="admin" id="nav-admin-link" style="display: none;"><i class="fa-solid fa-gauge-high"></i> Admin Panel</a>
+      </nav>
+
+      <!-- Right Header Actions (Auth / User Profile) -->
+      <div class="nav-actions">
+        <!-- Logged Out State -->
+        <div id="nav-auth-logged-out" class="auth-box">
+          <button class="btn btn-outline-primary btn-sm" id="btn-open-login">
+            <i class="fa-regular fa-user"></i> Login
+          </button>
+          <button class="btn btn-primary btn-sm" id="btn-open-register">
+            Register
+          </button>
+        </div>
+
+        <!-- Logged In State -->
+        <div id="nav-auth-logged-in" class="auth-box hidden">
+          <div class="user-profile-badge" id="user-profile-menu-trigger">
+            <div class="avatar-circle" id="user-avatar-initials">AJ</div>
+            <div class="user-badge-info">
+              <span class="user-display-name" id="user-nav-name">Alex Johnson</span>
+              <span class="user-role-tag" id="user-nav-role">Student</span>
+            </div>
+            <i class="fa-solid fa-chevron-down dropdown-arrow"></i>
+          </div>
+
+          <!-- Dropdown Menu -->
+          <div class="user-dropdown-menu hidden" id="user-dropdown-menu">
+            <div class="dropdown-header">
+              <p class="dropdown-user-email" id="user-dropdown-email">alex.j@campus.edu</p>
+            </div>
+            <hr class="dropdown-divider">
+            <a href="#my-reports" class="dropdown-item"><i class="fa-solid fa-box-archive"></i> My Reported Items</a>
+            <a href="#admin" class="dropdown-item admin-dropdown-item hidden" id="dropdown-admin-link" style="display: none;"><i class="fa-solid fa-shield-halved"></i> Campus Admin Panel</a>
+            <hr class="dropdown-divider">
+            <button class="dropdown-item text-danger" id="btn-logout"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</button>
+          </div>
+        </div>
+
+        <!-- Mobile Hamburger Toggle -->
+        <button class="mobile-toggle-btn" id="mobile-toggle-btn" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Navigation -->
+  <div class="mobile-nav-backdrop hidden" id="mobile-nav-backdrop"></div>
+  <div class="mobile-nav-drawer hidden" id="mobile-nav-drawer">
+    <div class="drawer-header">
+      <div class="brand-logo">
+        <div class="logo-icon-wrap">
+          <i class="fa-solid fa-shield-heart"></i>
+        </div>
+        <span class="logo-title">CAMPUS CARE</span>
+      </div>
+      <button class="drawer-close-btn" id="drawer-close-btn">&times;</button>
+    </div>
+    <div class="drawer-body">
+      <a href="#home" class="drawer-link active" data-view="home"><i class="fa-solid fa-house"></i> Home</a>
+      <a href="#browse" class="drawer-link" data-view="browse"><i class="fa-solid fa-compass"></i> Browse Items</a>
+      <a href="#report" class="drawer-link" data-view="report"><i class="fa-solid fa-circle-plus"></i> Report Item</a>
+      <a href="#my-reports" class="drawer-link" data-view="my-reports"><i class="fa-solid fa-clipboard-user"></i> My Reports</a>
+      <a href="#admin" class="drawer-link admin-nav-link hidden" data-view="admin" id="drawer-admin-link" style="display: none;"><i class="fa-solid fa-gauge-high"></i> Admin Panel</a>
+      <hr class="drawer-divider">
+      <div id="drawer-auth-actions"></div>
+    </div>
+  </div>
+
+  <!-- MAIN APP VIEWS CONTAINER -->
+  <main class="main-content" id="main-content">
+
+    <!-- ==============================================
+         1. HOME VIEW
+    =============================================== -->
+    <section id="view-home" class="app-view active">
+      <!-- Hero Section -->
+      <section class="hero-section">
+        <div class="container hero-container">
+          <div class="hero-content">
+            <div class="hero-badge">
+              <span class="pulse-dot"></span> 24/7 Digital Campus Care Portal
+            </div>
+            <h1 class="hero-title">
+              Lost Something? <br>
+              <span class="hero-gradient-text">Find It Here.</span>
+            </h1>
+            <p class="hero-description">
+              Campus Care is the centralized digital hub connecting students, faculty, and campus security. Report missing belongings in seconds, browse items found across campus, and safely reclaim what's yours.
+            </p>
+            <div class="hero-cta-group">
+              <button class="btn btn-danger-gradient btn-lg hero-cta-btn" id="hero-btn-lost">
+                <i class="fa-solid fa-magnifying-glass-location"></i> Report Lost Item
+              </button>
+              <button class="btn btn-emerald-gradient btn-lg hero-cta-btn" id="hero-btn-found">
+                <i class="fa-solid fa-hand-holding-heart"></i> Report Found Item
+              </button>
+            </div>
+
+            <!-- Quick Trust Metrics -->
+            <div class="hero-highlights">
+              <div class="highlight-item">
+                <i class="fa-solid fa-bolt highlight-icon"></i>
+                <span>Instant campus-wide alerts</span>
+              </div>
+              <div class="highlight-item">
+                <i class="fa-solid fa-shield-check highlight-icon"></i>
+                <span>Admin verified claims</span>
+              </div>
+              <div class="highlight-item">
+                <i class="fa-solid fa-lock highlight-icon"></i>
+                <span>Safe student contact</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Right Visual Card -->
+          <div class="hero-visual">
+            <div class="hero-card-stack">
+              <div class="floating-badge badge-top-left">
+                <i class="fa-solid fa-circle-check text-success"></i>
+                <span>Over 140+ Items Returned</span>
+              </div>
+              <div class="hero-main-card">
+                <div class="card-preview-header">
+                  <span class="preview-tag tag-lost"><i class="fa-solid fa-circle-dot"></i> Just Reported</span>
+                  <span class="preview-location"><i class="fa-solid fa-location-dot"></i> Central Library</span>
+                </div>
+                <div class="card-preview-body">
+                  <h4>MacBook Air M2 (Space Gray)</h4>
+                  <p>Left near 2nd floor study carrels around 2:30 PM with stickers on lid.</p>
+                  <div class="preview-footer">
+                    <span class="preview-date"><i class="fa-regular fa-clock"></i> 20 mins ago</span>
+                    <a href="#browse" class="preview-btn">View in Feed &rarr;</a>
+                  </div>
+                </div>
+              </div>
+              <div class="floating-badge badge-bottom-right">
+                <i class="fa-solid fa-bullhorn text-primary"></i>
+                <span>Direct Lost & Found Channel</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Real-Time Campus Statistics Strip -->
+      <section class="stats-section">
+        <div class="container">
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon-wrap bg-blue-light">
+                <i class="fa-solid fa-boxes-stacked text-primary"></i>
+              </div>
+              <div class="stat-info">
+                <h3 class="stat-number" id="stat-total-items">0</h3>
+                <p class="stat-label">Total Reported Items</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrap bg-rose-light">
+                <i class="fa-solid fa-triangle-exclamation text-danger"></i>
+              </div>
+              <div class="stat-info">
+                <h3 class="stat-number" id="stat-lost-items">0</h3>
+                <p class="stat-label">Active Lost Items</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrap bg-emerald-light">
+                <i class="fa-solid fa-hand-holding-heart text-success"></i>
+              </div>
+              <div class="stat-info">
+                <h3 class="stat-number" id="stat-found-items">0</h3>
+                <p class="stat-label">Found & Awaiting Claim</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon-wrap bg-purple-light">
+                <i class="fa-solid fa-circle-check text-purple"></i>
+              </div>
+              <div class="stat-info">
+                <h3 class="stat-number" id="stat-returned-items">0</h3>
+                <p class="stat-label">Successfully Returned</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Recently Reported Items Section -->
+      <section class="recent-items-section">
+        <div class="container">
+          <div class="section-header-flex">
+            <div>
+              <span class="section-subheading"><i class="fa-solid fa-clock-rotate-left"></i> Real-Time Feed</span>
+              <h2 class="section-heading">Recently Reported Items</h2>
+              <p class="section-desc">Keep an eye out for these recently lost or found belongings across campus grounds.</p>
+            </div>
+            <a href="#browse" class="btn btn-outline-primary" id="btn-view-all-recent">
+              Browse All Items <i class="fa-solid fa-arrow-right"></i>
+            </a>
+          </div>
+
+          <div class="items-grid" id="home-recent-grid">
+            <!-- Dynamically populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- How It Works Section -->
+      <section class="how-it-works-section">
+        <div class="container">
+          <div class="text-center section-title-center">
+            <span class="section-subheading">Simple & Organized</span>
+            <h2 class="section-heading">How Campus Care Works</h2>
+            <p class="section-desc">Replacing physical lost-and-found notice boards with a transparent 3-step digital flow.</p>
+          </div>
+
+          <div class="steps-grid">
+            <div class="step-card">
+              <div class="step-number">01</div>
+              <div class="step-icon-wrap">
+                <i class="fa-solid fa-file-pen"></i>
+              </div>
+              <h3 class="step-title">1. Post a Quick Report</h3>
+              <p class="step-text">Lost your keys or found someone's ID card? Submit the details, campus location, and photo in under a minute.</p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-number">02</div>
+              <div class="step-icon-wrap">
+                <i class="fa-solid fa-magnifying-glass"></i>
+              </div>
+              <h3 class="step-title">2. Search & Match</h3>
+              <p class="step-text">Search by category, date, or specific building. Filter between lost items and found items awaiting their owners.</p>
+            </div>
+
+            <div class="step-card">
+              <div class="step-number">03</div>
+              <div class="step-icon-wrap">
+                <i class="fa-solid fa-handshake"></i>
+              </div>
+              <h3 class="step-title">3. Safely Reclaim</h3>
+              <p class="step-text">Reach out to the reporter or visit the designated campus security station to verify ownership and collect your item.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Campus Notice Banner -->
+      <section class="campus-banner-section">
+        <div class="container">
+          <div class="campus-banner-box">
+            <div class="banner-icon">
+              <i class="fa-solid fa-building-columns"></i>
+            </div>
+            <div class="banner-content">
+              <h3>Central Campus Security & Helpdesk</h3>
+              <p>Valuable items such as laptops, passports, and keys can also be turned into the Main Security Office (Admin Building, Ground Floor, Room 102). Mon–Sat, 8:00 AM – 7:00 PM.</p>
+            </div>
+            <div class="banner-action">
+              <a href="#browse" class="btn btn-light-primary">Explore All Items</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </section>
+
+    <!-- ==============================================
+         2. BROWSE & SEARCH VIEW
+    =============================================== -->
+    <section id="view-browse" class="app-view hidden">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="page-header">
+          <span class="section-subheading"><i class="fa-solid fa-compass"></i> Campus Directory</span>
+          <h1 class="page-title">Browse Lost & Found Items</h1>
+          <p class="page-subtitle">Search, filter, and inspect items reported across all campus departments, hostels, and sports grounds.</p>
+        </div>
+
+        <!-- Filter & Search Controls Card -->
+        <div class="filter-controls-card">
+          <!-- Top Row: Search Input -->
+          <div class="search-row">
+            <div class="search-input-wrapper">
+              <i class="fa-solid fa-magnifying-glass search-icon"></i>
+              <input type="text" id="browse-search-input" class="search-input" placeholder="Search by item name, description, color, or location..." autocomplete="off">
+              <button class="search-clear-btn hidden" id="browse-search-clear" title="Clear search">&times;</button>
+            </div>
+            <div class="sort-wrapper">
+              <label for="browse-sort-select" class="sort-label"><i class="fa-solid fa-arrow-down-short-wide"></i> Sort:</label>
+              <select id="browse-sort-select" class="custom-select">
+                <option value="newest">Newest Reported</option>
+                <option value="oldest">Oldest First</option>
+                <option value="name-asc">Item Name (A-Z)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Middle Row: Status Segmented Control -->
+          <div class="filter-segments-row">
+            <div class="status-segment-group">
+              <button class="segment-btn active" data-type="all">All Items (<span id="count-all">0</span>)</button>
+              <button class="segment-btn segment-lost" data-type="lost"><i class="fa-solid fa-circle-exclamation"></i> Lost Items (<span id="count-lost">0</span>)</button>
+              <button class="segment-btn segment-found" data-type="found"><i class="fa-solid fa-hand-holding-heart"></i> Found Items (<span id="count-found">0</span>)</button>
+            </div>
+
+            <!-- Location Filter Dropdown -->
+            <div class="location-filter-wrapper">
+              <i class="fa-solid fa-location-dot filter-icon"></i>
+              <select id="browse-location-select" class="custom-select location-select">
+                <option value="all">All Campus Locations</option>
+                <option value="Central Library">Central Library</option>
+                <option value="Main Cafeteria">Main Cafeteria</option>
+                <option value="Science Block">Science Block</option>
+                <option value="Engineering Complex">Engineering Complex</option>
+                <option value="Auditorium">Auditorium & Foyer</option>
+                <option value="Sports Complex">Sports Complex & Grounds</option>
+                <option value="Student Center">Student Activity Center</option>
+                <option value="Parking Area">North / South Parking</option>
+                <option value="Hostel Area">Hostel Blocks</option>
+                <option value="Other Campus Areas">Other Campus Areas</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Bottom Row: Category Pills -->
+          <div class="category-pills-row">
+            <span class="category-filter-label"><i class="fa-solid fa-tags"></i> Categories:</span>
+            <div class="category-pills-list" id="category-pills-container">
+              <button class="cat-pill active" data-category="all">All Categories</button>
+              <button class="cat-pill" data-category="Electronics"><i class="fa-solid fa-laptop"></i> Electronics</button>
+              <button class="cat-pill" data-category="ID Cards & Documents"><i class="fa-solid fa-id-card"></i> ID Cards & Docs</button>
+              <button class="cat-pill" data-category="Keys"><i class="fa-solid fa-key"></i> Keys</button>
+              <button class="cat-pill" data-category="Books & Stationery"><i class="fa-solid fa-book"></i> Books & Notes</button>
+              <button class="cat-pill" data-category="Wallets & Bags"><i class="fa-solid fa-wallet"></i> Wallets & Bags</button>
+              <button class="cat-pill" data-category="Clothing"><i class="fa-solid fa-shirt"></i> Clothing</button>
+              <button class="cat-pill" data-category="Others"><i class="fa-solid fa-icons"></i> Others</button>
+            </div>
+          </div>
+
+          <!-- Active Filter summary & Reset -->
+          <div class="filter-summary-row hidden" id="filter-summary-row">
+            <span id="filter-summary-text">Showing 8 matching items</span>
+            <button class="btn btn-link-sm" id="btn-reset-filters"><i class="fa-solid fa-rotate-right"></i> Reset All Filters</button>
+          </div>
+        </div>
+
+        <!-- Items Display Grid -->
+        <div class="items-grid" id="browse-items-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state-card hidden" id="browse-empty-state">
+          <div class="empty-state-icon">
+            <i class="fa-solid fa-magnifying-glass-chart"></i>
+          </div>
+          <h3 class="empty-state-title">No items found</h3>
+          <p class="empty-state-desc">We couldn't find any items matching your selected search terms or filters. Try adjusting your search or report a new item.</p>
+          <div class="empty-state-actions">
+            <button class="btn btn-outline-primary" id="btn-empty-reset">Reset Filters</button>
+            <a href="#report" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Report Item Now</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         3. REPORT ITEM VIEW
+    =============================================== -->
+    <section id="view-report" class="app-view hidden">
+      <div class="container">
+        <div class="report-form-layout">
+          <!-- Left side instructions / reassurance -->
+          <div class="report-info-sidebar">
+            <div class="sidebar-card">
+              <span class="badge badge-primary-light mb-2"><i class="fa-solid fa-shield-check"></i> Campus Assistance</span>
+              <h2>Report a Missing or Found Item</h2>
+              <p class="text-muted">Whether you mislaid your possessions or found something left behind by a classmate, providing accurate details helps expedite safe returns.</p>
+              
+              <div class="report-tips-list">
+                <div class="tip-item">
+                  <div class="tip-icon"><i class="fa-solid fa-camera"></i></div>
+                  <div>
+                    <h5>Add a clear photo</h5>
+                    <p>A photo drastically increases the likelihood of quick identification.</p>
+                  </div>
+                </div>
+                <div class="tip-item">
+                  <div class="tip-icon"><i class="fa-solid fa-map-pin"></i></div>
+                  <div>
+                    <h5>Pinpoint the exact spot</h5>
+                    <p>Mention room numbers, floor levels, or nearby campus landmarks.</p>
+                  </div>
+                </div>
+                <div class="tip-item">
+                  <div class="tip-icon"><i class="fa-solid fa-id-badge"></i></div>
+                  <div>
+                    <h5>Accurate contact details</h5>
+                    <p>Ensure your phone number or college email is reachable.</p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Quick campus notice -->
+              <div class="sidebar-alert">
+                <i class="fa-solid fa-circle-info"></i>
+                <div>
+                  <strong>Campus Care Policy:</strong> All submissions are monitored by Campus Security to prevent fraud and protect student privacy.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right side: The Main Report Form -->
+          <div class="report-form-main">
+            <div class="form-card">
+              <!-- Report Type Selector -->
+              <div class="report-type-toggle">
+                <button type="button" class="type-toggle-btn active" id="btn-toggle-lost" data-report-type="Lost">
+                  <i class="fa-solid fa-triangle-exclamation"></i>
+                  <span>I Lost Something</span>
+                </button>
+                <button type="button" class="type-toggle-btn" id="btn-toggle-found" data-report-type="Found">
+                  <i class="fa-solid fa-hand-holding-heart"></i>
+                  <span>I Found Something</span>
+                </button>
+              </div>
+
+              <form id="report-item-form" novalidate>
+                <!-- Hidden report type input -->
+                <input type="hidden" id="report-type-input" value="Lost">
+
+                <!-- Item Name -->
+                <div class="form-group">
+                  <label for="report-item-name" class="form-label">
+                    Item Name <span class="required-star">*</span>
+                  </label>
+                  <input type="text" id="report-item-name" class="form-control" placeholder="e.g., Space Gray MacBook Air, Blue Hydro Flask, Student ID Card" required>
+                  <span class="form-hint">Be concise and include brand or prominent color.</span>
+                </div>
+
+                <!-- Category & Date Row -->
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="report-category" class="form-label">
+                      Category <span class="required-star">*</span>
+                    </label>
+                    <select id="report-category" class="form-control custom-select" required>
+                      <option value="" disabled selected>Select Item Category</option>
+                      <option value="Electronics">Electronics (Laptop, Phone, Earbuds)</option>
+                      <option value="ID Cards & Documents">ID Cards & Documents</option>
+                      <option value="Keys">Keys (Vehicle, Room, Locker)</option>
+                      <option value="Books & Stationery">Books & Stationery</option>
+                      <option value="Wallets & Bags">Wallets & Bags</option>
+                      <option value="Clothing">Clothing & Accessories</option>
+                      <option value="Others">Others</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="report-date" class="form-label">
+                      Date Lost / Found <span class="required-star">*</span>
+                    </label>
+                    <input type="date" id="report-date" class="form-control" required>
+                  </div>
+                </div>
+
+                <!-- Location -->
+                <div class="form-group">
+                  <label for="report-location" class="form-label">
+                    Campus Location <span class="required-star">*</span>
+                  </label>
+                  <input type="text" id="report-location" class="form-control" placeholder="e.g., Central Library 2nd Floor, Main Cafeteria Counter, Sports Turf" required>
+                  <div class="quick-location-tags">
+                    <span>Quick picks:</span>
+                    <button type="button" class="loc-tag" data-val="Central Library">Library</button>
+                    <button type="button" class="loc-tag" data-val="Main Cafeteria">Cafeteria</button>
+                    <button type="button" class="loc-tag" data-val="Science Block">Science Block</button>
+                    <button type="button" class="loc-tag" data-val="Sports Complex">Sports Complex</button>
+                    <button type="button" class="loc-tag" data-val="Auditorium">Auditorium</button>
+                  </div>
+                </div>
+
+                <!-- Description -->
+                <div class="form-group">
+                  <label for="report-description" class="form-label">
+                    Detailed Description <span class="required-star">*</span>
+                  </label>
+                  <textarea id="report-description" rows="4" class="form-control" placeholder="Describe unique identifying features, scratches, stickers, contents, or circumstances..." required></textarea>
+                </div>
+
+                <!-- Image Upload Section -->
+                <div class="form-group">
+                  <label class="form-label">Upload Item Photo</label>
+                  <div class="image-upload-box" id="drop-area">
+                    <input type="file" id="report-image-input" accept="image/*" class="file-input-hidden">
+                    <div class="upload-idle-state" id="upload-idle-state">
+                      <div class="upload-icon-circle">
+                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                      </div>
+                      <p class="upload-title">Drag & drop your photo here, or <span class="text-primary font-bold">Browse</span></p>
+                      <p class="upload-subtitle">Supports JPG, PNG, WebP up to 5MB</p>
+                    </div>
+
+                    <!-- Image Preview Container -->
+                    <div class="upload-preview-container hidden" id="upload-preview-container">
+                      <img id="image-preview-element" src="" alt="Item Preview">
+                      <button type="button" class="btn-remove-preview" id="btn-remove-image" title="Remove photo">&times;</button>
+                    </div>
+                  </div>
+
+                  <!-- Quick sample photo chooser for convenience -->
+                  <div class="sample-photos-row">
+                    <span class="sample-photos-label"><i class="fa-regular fa-image"></i> Or pick a stock campus photo:</span>
+                    <div class="sample-photos-chips">
+                      <button type="button" class="sample-chip" data-img="https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80">Laptop</button>
+                      <button type="button" class="sample-chip" data-img="https://images.unsplash.com/photo-1602143407151-7111542de6e8?auto=format&fit=crop&w=600&q=80">Water Bottle</button>
+                      <button type="button" class="sample-chip" data-img="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&w=600&q=80">ID / Card</button>
+                      <button type="button" class="sample-chip" data-img="https://images.unsplash.com/photo-1582139329536-e7284fece509?auto=format&fit=crop&w=600&q=80">Keys</button>
+                      <button type="button" class="sample-chip" data-img="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=600&q=80">Book</button>
+                      <button type="button" class="sample-chip" data-img="https://images.unsplash.com/photo-1627123424574-724758594e93?auto=format&fit=crop&w=600&q=80">Wallet</button>
+                      <button type="button" class="sample-chip" data-img="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80">Headphones</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Reporter Contact Info Section -->
+                <div class="form-section-divider">
+                  <span><i class="fa-solid fa-address-card"></i> Contact Information</span>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="report-contact-name" class="form-label">
+                      Your Full Name <span class="required-star">*</span>
+                    </label>
+                    <input type="text" id="report-contact-name" class="form-control" placeholder="e.g., Alex Johnson" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="report-contact-role" class="form-label">
+                      Campus Role <span class="required-star">*</span>
+                    </label>
+                    <select id="report-contact-role" class="form-control custom-select" required>
+                      <option value="Student" selected>Student</option>
+                      <option value="Faculty">Faculty Member</option>
+                      <option value="Staff">Campus Staff / Security</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="report-contact-email" class="form-label">
+                      College / Personal Email <span class="required-star">*</span>
+                    </label>
+                    <input type="email" id="report-contact-email" class="form-control" placeholder="e.g., alex.j@campus.edu" required>
+                  </div>
+                  <div class="form-group col-md-6">
+                    <label for="report-contact-phone" class="form-label">
+                      Phone / WhatsApp Number <span class="required-star">*</span>
+                    </label>
+                    <input type="tel" id="report-contact-phone" class="form-control" placeholder="e.g., +1 (555) 234-5678" required>
+                  </div>
+                </div>
+
+                <!-- Submit Button -->
+                <div class="form-actions-bar">
+                  <button type="submit" class="btn btn-primary btn-lg w-100" id="btn-submit-report">
+                    <i class="fa-solid fa-paper-plane"></i> Submit Item Report
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         4. MY REPORTS VIEW
+    =============================================== -->
+    <section id="view-my-reports" class="app-view hidden">
+      <div class="container">
+        <!-- Page Header -->
+        <div class="page-header flex-between-header">
+          <div>
+            <span class="section-subheading"><i class="fa-solid fa-clipboard-user"></i> Personal Dashboard</span>
+            <h1 class="page-title">My Reported Items</h1>
+            <p class="page-subtitle">Track, update, resolve, or remove items that you have reported on Campus Care.</p>
+          </div>
+          <div>
+            <a href="#report" class="btn btn-primary">
+              <i class="fa-solid fa-plus"></i> New Report
+            </a>
+          </div>
+        </div>
+
+        <!-- Filter Sub-tabs for My Reports -->
+        <div class="my-reports-subnav">
+          <button class="subnav-btn active" data-my-filter="all">All My Reports (<span id="my-count-all">0</span>)</button>
+          <button class="subnav-btn" data-my-filter="Reported">Active / Reported (<span id="my-count-reported">0</span>)</button>
+          <button class="subnav-btn" data-my-filter="Verified">Verified (<span id="my-count-verified">0</span>)</button>
+          <button class="subnav-btn" data-my-filter="Returned">Returned / Resolved (<span id="my-count-returned">0</span>)</button>
+        </div>
+
+        <!-- My Reports Cards Grid -->
+        <div class="items-grid" id="my-reports-grid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Empty state when no reports exist for this user -->
+        <div class="empty-state-card hidden" id="my-reports-empty-state">
+          <div class="empty-state-icon">
+            <i class="fa-solid fa-clipboard-check"></i>
+          </div>
+          <h3 class="empty-state-title">No reports found</h3>
+          <p class="empty-state-desc">You haven't submitted any lost or found reports under this account yet.</p>
+          <div class="empty-state-actions">
+            <a href="#report" class="btn btn-primary"><i class="fa-solid fa-plus"></i> Report an Item</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==============================================
+         5. ADMIN PANEL VIEW (Protected Route)
+    =============================================== -->
+    <section id="view-admin" class="app-view hidden">
+      <div class="container">
+        <!-- 5A. ACCESS DENIED SCREEN (Strictly shown to non-admin users) -->
+        <div id="admin-access-denied" class="access-denied-wrapper hidden">
+          <div class="access-denied-card">
+            <div class="access-denied-icon-wrap">
+              <i class="fa-solid fa-shield-halved"></i>
+            </div>
+            <span class="badge badge-danger-light mb-2"><i class="fa-solid fa-lock"></i> Restricted Area</span>
+            <h2 class="access-denied-title">Access Denied</h2>
+            <p class="access-denied-message">
+              You do not have permission to access the Campus Care Administration Panel.
+            </p>
+            <div class="access-denied-details">
+              <div class="access-detail-item">
+                <i class="fa-solid fa-user-xmark text-danger"></i>
+                <span>Current Session: <strong id="denied-current-email" class="text-danger">Guest</strong></span>
+              </div>
+              <div class="access-detail-item">
+                <i class="fa-solid fa-user-shield text-primary"></i>
+                <span>Designated Administrator: <strong id="denied-admin-email" class="text-primary">admin@college.edu</strong></span>
+              </div>
+            </div>
+            <div class="access-denied-actions">
+              <button type="button" class="btn btn-primary btn-lg" id="btn-admin-return-home">
+                <i class="fa-solid fa-house"></i> Return to Home
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5B. ADMIN DASHBOARD CONTENT (Rendered ONLY for the single designated administrator) -->
+        <div id="admin-dashboard-content" class="admin-dashboard-wrapper">
+          <!-- Header -->
+          <div class="page-header flex-between-header">
+            <div>
+              <div class="d-flex align-center gap-2 mb-1">
+                <span class="badge badge-admin"><i class="fa-solid fa-shield-halved"></i> Security &amp; Admin Console</span>
+              </div>
+              <h1 class="page-title">Campus Lost &amp; Found Administration</h1>
+              <p class="page-subtitle">Verify legitimacy, resolve claims, update item lifecycle, and manage fraudulent postings.</p>
+            </div>
+            <div class="admin-actions-header">
+              <button class="btn btn-outline-secondary btn-sm" id="btn-reset-sample-data" title="Reload fresh sample data">
+                <i class="fa-solid fa-rotate-left"></i> Reset Demo Data
+              </button>
+            </div>
+          </div>
+
+          <!-- Admin Overview Metrics Cards -->
+          <div class="admin-metrics-grid">
+            <div class="admin-metric-card">
+              <div class="metric-top">
+                <span class="metric-label">Total Submissions</span>
+                <i class="fa-solid fa-database text-primary"></i>
+              </div>
+              <div class="metric-value" id="admin-stat-total">0</div>
+              <span class="metric-subtitle">Across all campuses</span>
+            </div>
+
+            <div class="admin-metric-card">
+              <div class="metric-top">
+                <span class="metric-label">Pending Review</span>
+                <i class="fa-solid fa-clock text-warning"></i>
+              </div>
+              <div class="metric-value text-warning" id="admin-stat-pending">0</div>
+              <span class="metric-subtitle">Awaiting administrative check</span>
+            </div>
+
+            <div class="admin-metric-card">
+              <div class="metric-top">
+                <span class="metric-label">Verified Active</span>
+                <i class="fa-solid fa-badge-check text-blue"></i>
+              </div>
+              <div class="metric-value text-blue" id="admin-stat-verified">0</div>
+              <span class="metric-subtitle">Authenticity confirmed</span>
+            </div>
+
+            <div class="admin-metric-card">
+              <div class="metric-top">
+                <span class="metric-label">Returned to Owner</span>
+                <i class="fa-solid fa-circle-check text-success"></i>
+              </div>
+              <div class="metric-value text-success" id="admin-stat-returned">0</div>
+              <span class="metric-subtitle">Successfully resolved</span>
+            </div>
+          </div>
+
+          <!-- Management Table Card -->
+          <div class="admin-table-card">
+            <div class="table-toolbar">
+              <div class="toolbar-search">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" id="admin-search-input" placeholder="Filter by item, reporter, or location...">
+              </div>
+              <div class="toolbar-filters">
+                <select id="admin-status-filter" class="custom-select">
+                  <option value="all">All Item Statuses</option>
+                  <option value="Reported">Status: Reported</option>
+                  <option value="Verified">Status: Verified</option>
+                  <option value="Returned">Status: Returned</option>
+                </select>
+                <select id="admin-type-filter" class="custom-select">
+                  <option value="all">All Types (Lost &amp; Found)</option>
+                  <option value="Lost">Type: Lost Only</option>
+                  <option value="Found">Type: Found Only</option>
+                </select>
+              </div>
+            </div>
+
+            <!-- Table responsive container -->
+            <div class="table-responsive">
+              <table class="admin-table" id="admin-reports-table">
+                <thead>
+                  <tr>
+                    <th>Item Details</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Location &amp; Date</th>
+                    <th>Reporter</th>
+                    <th>Status</th>
+                    <th>Admin Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-table-body">
+                  <!-- Populated by JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Table empty state -->
+            <div class="table-empty-state hidden" id="admin-table-empty">
+              <i class="fa-solid fa-folder-open"></i>
+              <p>No matching reports found in database.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ==============================================
+       MODALS
+  =============================================== -->
+
+  <!-- 1. ITEM DETAILS MODAL -->
+  <div class="modal-backdrop hidden" id="modal-item-details">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <button class="modal-close-btn" id="modal-close-details">&times;</button>
+        <div class="modal-body modal-item-details-body" id="modal-details-content">
+          <!-- Populated dynamically via JS -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 2. CONTACT REPORTER MODAL -->
+  <div class="modal-backdrop hidden" id="modal-contact-reporter">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon-badge bg-primary-light">
+              <i class="fa-solid fa-paper-plane text-primary"></i>
+            </div>
+            <div>
+              <h3 class="modal-title">Contact Reporter</h3>
+              <p class="modal-subtitle" id="contact-modal-item-title">Item Title</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="modal-close-contact">&times;</button>
+        </div>
+        <div class="modal-body">
+          <!-- Reporter Info Card -->
+          <div class="reporter-contact-card">
+            <div class="reporter-avatar" id="contact-avatar">AJ</div>
+            <div class="reporter-meta">
+              <h4 id="contact-reporter-name">Alex Johnson</h4>
+              <span class="badge badge-role" id="contact-reporter-role">Student</span>
+            </div>
+          </div>
+
+          <!-- Direct Channels -->
+          <div class="contact-channels-group">
+            <div class="channel-item">
+              <div class="channel-icon"><i class="fa-solid fa-envelope"></i></div>
+              <div class="channel-info">
+                <span class="channel-label">Email Address</span>
+                <span class="channel-value" id="contact-email-val">alex.j@campus.edu</span>
+              </div>
+              <a href="#" class="btn btn-outline-primary btn-sm" id="btn-mail-link" target="_blank">Send Email</a>
+            </div>
+
+            <div class="channel-item">
+              <div class="channel-icon text-success"><i class="fa-brands fa-whatsapp"></i></div>
+              <div class="channel-info">
+                <span class="channel-label">Phone / WhatsApp</span>
+                <span class="channel-value" id="contact-phone-val">+1 (555) 234-5678</span>
+              </div>
+              <a href="#" class="btn btn-outline-success btn-sm" id="btn-wa-link" target="_blank">Chat</a>
+            </div>
+          </div>
+
+          <!-- Send Claim / Verification Message in-app -->
+          <div class="in-app-message-box">
+            <label class="form-label" for="claim-message-text"><i class="fa-regular fa-comment-dots"></i> Send a Claim Verification Message:</label>
+            <textarea id="claim-message-text" rows="3" class="form-control" placeholder="Hi! I believe this is my item. I can provide the serial number / unlock password / proof of ownership..."></textarea>
+            <button type="button" class="btn btn-primary btn-sm mt-2 w-100" id="btn-send-claim-msg">
+              <i class="fa-solid fa-paper-plane"></i> Transmit Verification Message
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3. EDIT REPORT MODAL -->
+  <div class="modal-backdrop hidden" id="modal-edit-report">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div class="modal-title-wrap">
+            <div class="modal-icon-badge bg-blue-light">
+              <i class="fa-solid fa-pen-to-square text-primary"></i>
+            </div>
+            <div>
+              <h3 class="modal-title">Edit Report</h3>
+              <p class="modal-subtitle">Update your item's status or location</p>
+            </div>
+          </div>
+          <button class="modal-close-btn" id="modal-close-edit">&times;</button>
+        </div>
+        <div class="modal-body">
+          <form id="edit-item-form">
+            <input type="hidden" id="edit-item-id">
+            
+            <div class="form-group">
+              <label for="edit-item-name" class="form-label">Item Name</label>
+              <input type="text" id="edit-item-name" class="form-control" required>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group col-md-6">
+                <label for="edit-category" class="form-label">Category</label>
+                <select id="edit-category" class="form-control custom-select" required>
+                  <option value="Electronics">Electronics</option>
+                  <option value="ID Cards & Documents">ID Cards & Documents</option>
+                  <option value="Keys">Keys</option>
+                  <option value="Books & Stationery">Books & Stationery</option>
+                  <option value="Wallets & Bags">Wallets & Bags</option>
+                  <option value="Clothing">Clothing</option>
+                  <option value="Others">Others</option>
+                </select>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label for="edit-status" class="form-label">Lifecycle Status</label>
+                <select id="edit-status" class="form-control custom-select" required>
+                  <option value="Reported">Reported</option>
+                  <option value="Verified">Verified</option>
+                  <option value="Returned">Returned / Resolved</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-location" class="form-label">Campus Location</label>
+              <input type="text" id="edit-location" class="form-control" required>
+            </div>
+
+            <div class="form-group">
+              <label for="edit-description" class="form-label">Description</label>
+              <textarea id="edit-description" rows="3" class="form-control" required></textarea>
+            </div>
+
+            <div class="modal-actions-footer">
+              <button type="button" class="btn btn-outline-secondary" id="btn-cancel-edit">Cancel</button>
+              <button type="submit" class="btn btn-primary" id="btn-save-edit">Save Changes</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 4. AUTH MODAL (LOGIN & REGISTER) -->
+  <div class="modal-backdrop hidden" id="modal-auth">
+    <div class="modal-dialog modal-auth-dialog">
+      <div class="modal-content">
+        <button class="modal-close-btn" id="modal-close-auth">&times;</button>
+        
+        <!-- Auth Header Tabs -->
+        <div class="auth-tabs">
+          <button class="auth-tab-btn active" id="tab-btn-login">Login to Campus Care</button>
+          <button class="auth-tab-btn" id="tab-btn-register">New Account</button>
+        </div>
+
+        <div class="modal-body auth-modal-body">
+          <!-- Quick Demo Accounts One-Click Switcher -->
+          <div class="demo-accounts-pill-box">
+            <span class="demo-label"><i class="fa-solid fa-wand-magic-sparkles"></i> One-Click Demo Sign In:</span>
+            <div class="demo-btns-wrap">
+              <button type="button" class="btn-demo-user" data-demo="student">Student (Alex)</button>
+              <button type="button" class="btn-demo-user" data-demo="faculty">Faculty (Dr. Watson)</button>
+              <button type="button" class="btn-demo-user btn-demo-admin" data-demo="admin"><i class="fa-solid fa-user-shield"></i> Admin (admin@college.edu)</button>
+            </div>
+          </div>
+
+          <!-- LOGIN PANE -->
+          <div id="pane-login" class="auth-pane active">
+            <form id="form-login" novalidate>
+              <div class="form-group">
+                <label for="login-email" class="form-label">Campus Email</label>
+                <div class="input-with-icon">
+                  <i class="fa-regular fa-envelope"></i>
+                  <input type="email" id="login-email" class="form-control" placeholder="your.name@campus.edu" required>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="login-password" class="form-label">Password</label>
+                <div class="input-with-icon">
+                  <i class="fa-solid fa-lock"></i>
+                  <input type="password" id="login-password" class="form-control" placeholder="••••••••" required>
+                </div>
+              </div>
+
+              <button type="submit" class="btn btn-primary w-100 btn-lg mt-3">
+                <i class="fa-solid fa-right-to-bracket"></i> Sign In
+              </button>
+            </form>
+          </div>
+
+          <!-- REGISTER PANE -->
+          <div id="pane-register" class="auth-pane hidden">
+            <!-- Step 1: User Account Details -->
+            <div id="register-step-form" class="register-step">
+              <form id="form-register" novalidate>
+                <div class="form-group">
+                  <label for="reg-name" class="form-label">Full Name <span class="required-star">*</span></label>
+                  <div class="input-with-icon">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="text" id="reg-name" class="form-control" placeholder="e.g., Alex Johnson" required>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <label for="reg-email" class="form-label">Campus Email <span class="required-star">*</span></label>
+                  <div class="input-with-icon">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" id="reg-email" class="form-control" placeholder="name@campus.edu" required>
+                  </div>
+                </div>
+
+                <div class="form-row">
+                  <div class="form-group col-md-6">
+                    <label for="reg-role" class="form-label">Campus Role <span class="required-star">*</span></label>
+                    <select id="reg-role" class="form-control custom-select" required>
+                      <option value="Student">Student</option>
+                      <option value="Faculty">Faculty</option>
+                      <option value="Staff">Staff</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group col-md-6">
+                    <label for="reg-password" class="form-label">Password <span class="required-star">*</span></label>
+                    <div class="input-with-icon">
+                      <i class="fa-solid fa-lock"></i>
+                      <input type="password" id="reg-password" class="form-control" placeholder="Create password" required>
+                    </div>
+                  </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary w-100 btn-lg mt-3" id="btn-request-otp">
+                  <i class="fa-solid fa-shield-halved"></i> Verify &amp; Get OTP Code
+                </button>
+              </form>
+            </div>
+
+            <!-- Step 2: OTP Verification Screen -->
+            <div id="register-step-otp" class="register-step hidden">
+              <div class="otp-verification-card">
+                <div class="otp-icon-bubble">
+                  <i class="fa-solid fa-envelope-circle-check"></i>
+                </div>
+                <h3 class="otp-title">Verify Campus Email</h3>
+                <p class="otp-desc">
+                  We've sent a 6-digit verification code to <br>
+                  <strong id="otp-target-email" class="text-primary">name@campus.edu</strong>
+                </p>
+
+                <!-- Demo Simulation Banner -->
+                <div class="otp-demo-banner">
+                  <div class="otp-demo-info">
+                    <i class="fa-solid fa-key"></i>
+                    <span>Demo OTP: <strong id="demo-otp-display" class="otp-demo-code">------</strong></span>
+                  </div>
+                  <button type="button" class="btn-demo-autofill" id="btn-autofill-otp" title="Click to auto-fill code">
+                    <i class="fa-solid fa-bolt"></i> Auto-fill
+                  </button>
+                </div>
+
+                <!-- OTP 6-Digit Inputs -->
+                <div class="otp-inputs-wrapper" id="otp-inputs-wrapper">
+                  <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-digit" data-index="0" autocomplete="off">
+                  <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-digit" data-index="1" autocomplete="off">
+                  <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-digit" data-index="2" autocomplete="off">
+                  <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-digit" data-index="3" autocomplete="off">
+                  <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-digit" data-index="4" autocomplete="off">
+                  <input type="text" inputmode="numeric" pattern="[0-9]*" maxlength="1" class="otp-digit" data-index="5" autocomplete="off">
+                </div>
+
+                <!-- Error feedback -->
+                <div id="otp-error-message" class="otp-error-msg hidden">
+                  <i class="fa-solid fa-circle-exclamation"></i>
+                  <span id="otp-error-text">Invalid code. Please re-enter.</span>
+                </div>
+
+                <!-- Verify CTA Button -->
+                <button type="button" class="btn btn-primary w-100 btn-lg mt-2" id="btn-verify-otp">
+                  <i class="fa-solid fa-circle-check"></i> Verify &amp; Complete Sign Up
+                </button>
+
+                <!-- Footer Navigation: Resend & Edit Details -->
+                <div class="otp-footer-actions">
+                  <div class="otp-resend-box">
+                    <span id="otp-timer-text">Resend code in <strong id="otp-countdown">30</strong>s</span>
+                    <button type="button" class="btn-link-resend hidden" id="btn-resend-otp">
+                      <i class="fa-solid fa-rotate-right"></i> Resend OTP
+                    </button>
+                  </div>
+                  <button type="button" class="btn-link-back" id="btn-otp-go-back">
+                    <i class="fa-solid fa-arrow-left"></i> Edit Details
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notifications Container -->
+  <div class="toast-container" id="toast-container"></div>
+
+  <!-- FOOTER -->
+  <footer class="app-footer">
+    <div class="container footer-container">
+      <div class="footer-col brand-col">
+        <div class="brand-logo footer-logo">
+          <div class="logo-icon-wrap">
+            <i class="fa-solid fa-shield-heart"></i>
+          </div>
+          <div class="logo-text-group">
+            <span class="logo-title">CAMPUS CARE</span>
+            <span class="logo-subtitle">A Digital Platform for Lost & Found Items</span>
+          </div>
+        </div>
+        <p class="footer-tagline">"Lost Something? Find It Here."</p>
+        <p class="footer-text">Connecting our college community to quickly recover lost belongings and safeguard student assets.</p>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Quick Links</h4>
+        <ul class="footer-links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#browse">Browse All Items</a></li>
+          <li><a href="#report">Report Lost Item</a></li>
+          <li><a href="#report">Report Found Item</a></li>
+          <li><a href="#my-reports">My Reports</a></li>
+          <li class="admin-nav-link hidden" style="display: none;"><a href="#admin">Campus Admin Panel</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4 class="footer-heading">Campus Drop-off Points</h4>
+        <ul class="footer-contact-list">
+          <li><i class="fa-solid fa-location-dot"></i> Central Library Circulation Desk</li>
+          <li><i class="fa-solid fa-location-dot"></i> Campus Security Office (Admin Bldg Room 102)</li>
+          <li><i class="fa-solid fa-location-dot"></i> Student Activity Center Helpdesk</li>
+          <li><i class="fa-solid fa-phone"></i> Emergency Helpline: (555) 019-9000</li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container bottom-inner">
+        <p>&copy; 2026 Campus Care. All rights reserved. Designed for College Lost & Found Management.</p>
+        <div class="footer-badge">
+          <i class="fa-solid fa-shield-check text-primary"></i> Verified Campus Portal
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Core Scripts -->
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
